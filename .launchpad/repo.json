@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "commit_skills": true,
+  "toolkits": [
+    "meshmesh"
+  ],
+  "add_ons": [
+    {
+      "id": "deploy-simple",
+      "configured": true
+    }
+  ],
+  "add_ons_offered": [
+    "deploy-multistage",
+    "deploy-simple",
+    "salesforce-docs-labs",
+    "slack-notifications"
+  ]
+}

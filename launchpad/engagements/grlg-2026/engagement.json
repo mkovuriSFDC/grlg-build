@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "kind": "training",
+  "status": "open",
+  "intent_storage": "repo",
+  "sources": [
+    {
+      "name": "grlg-discovery-2026",
+      "scopezilla_slug": "ptsd-lab",
+      "role": "primary",
+      "cursor": "fa8f477be5c2228f58cc8dc9b363eefa1949a682",
+      "tied_at": "2026-10-25"
+    }
+  ]
+}
