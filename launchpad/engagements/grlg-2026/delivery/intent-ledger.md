@@ -20,7 +20,7 @@ Status: ⬜ Not started · 🔧 In progress · ✅ Delivered · 🔄 Needs re-ve
 | INT-002 | 1 | ⬜ Not started | — | — | — |
 | INT-003 | 1 | ⬜ Not started | — | — | — |
 | INT-004 | 1 | ⬜ Not started | — | — | — |
-| INT-005 | 1 | ⬜ Not started | — | — | — |
+| INT-005 | 1 | 🔧 In progress | — | — | — |
 | INT-006 | 1 | ⬜ Not started | — | — | — |
 | INT-007 | 1 | ⬜ Not started | — | — | — |
 | INT-008 | 1 | ⬜ Not started | — | — | — |

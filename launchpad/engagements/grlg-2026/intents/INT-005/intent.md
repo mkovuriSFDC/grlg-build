@@ -7,6 +7,7 @@ surface: data-model
 origin: scopezilla
 source: grlg-discovery-2026#INT-005
 title: Commerce data from all three hubs lands in one shared model
+ratified: 2026-10-25 by Madhuri @ 382286216a4f · absorbed
 ---
 
 # INT-005 — Commerce data from all three hubs lands in one shared model
@@ -51,9 +52,9 @@ _none_
 
 ## Open questions
 
-- Q-008: Are the 500+ transaction types values of one field or distinct record structures? (Resolver: GRLG TAMS platform team) — UNANSWERED
-- Q-009: Are amounts consistently GST-inclusive or GST-exclusive across hubs? (Resolver: GRLG finance + TAMS team) — UNANSWERED
-- Q-010: Are transaction IDs unique only within a hub? How are voids, refunds, and edits represented? (G0206) (Resolver: GRLG TAMS platform team) — UNANSWERED
+- Q-008: Are the 500+ transaction types values of one field or distinct record structures? (Resolver: GRLG TAMS platform team) — ANSWERED: Provisional: values of one type field, grouped by a category mapping. See decisions/2026-10-25-int-005-provisional-tams-assumptions.md
+- Q-009: Are amounts consistently GST-inclusive or GST-exclusive across hubs? (Resolver: GRLG finance + TAMS team) — ANSWERED: Provisional: all three hubs send GST-inclusive amounts. See decisions/2026-10-25-int-005-provisional-tams-assumptions.md
+- Q-010: Are transaction IDs unique only within a hub? How are voids, refunds, and edits represented? (G0206) (Resolver: GRLG TAMS platform team) — ANSWERED: Provisional: IDs unique only within a hub; voids, refunds and edits arrive as new records linked to the original. See decisions/2026-10-25-int-005-provisional-tams-assumptions.md
 
 ## Grounding
 
