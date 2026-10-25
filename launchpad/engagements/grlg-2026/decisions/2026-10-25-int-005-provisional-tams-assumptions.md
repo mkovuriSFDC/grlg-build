@@ -25,3 +25,13 @@ For each question: get the customer's answer first (the build waits), or rule a 
 - If IDs turn out to be unique across hubs, the prefix stays (INT-005 requires it) and nothing breaks.
 - If edits arrive as in-place updates or as reversal-plus-repost (Q-010), the nightly load (INT-006) and reversal handling change; INT-005's reference field may become unused or need a reversal type.
 - INT-005's proof criteria for these behaviours rest on these assumptions. When the customer answers, re-check each criterion and refine the intent if the answer differs.
+
+## Follow-on rulings (same day, after the readiness check)
+
+The readiness check left three gaps. The Trusted Guide ruled on each:
+
+- **Proving the acceptance before INT-006:** INT-005 loads its own synthetic sample data (transactions, line items and carts for all three hubs, including a Hub 3-only click-and-collect type) so the acceptance walkthrough can run before INT-006's nightly loads exist. The sample data is test data, not a load path: no real customer data, no card numbers, and none of it carries into INT-006.
+- **Hub schema extensions (provisional):** until the hub data dictionaries arrive, the build maps a small set of made-up extension fields per hub into the shared fields. When the real dictionaries arrive, they replace the made-up fields and the mapping is re-proven.
+- **Transaction-type categories:** who supplies the code-to-category mapping is now an open question, Q-021, on INT-005. Until it's answered, the build uses the example categories the intent names (sale, return, void, loyalty accrual, redemption) on the sample codes.
+
+Consequences: the proof criteria for the extension mapping and the category grouping rest on made-up data, and get re-run against the real dictionaries and catalog when they arrive. Before INT-006's first real load, the sample data is removed or kept apart from the real data.
