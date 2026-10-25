@@ -2,7 +2,7 @@
 intent: INT-005
 scope_hash: 382286216a4f
 authored: 2026-10-25
-ratified: 2026-10-25 by Madhuri @ 8caa0054bcb3
+ratified: 2026-10-25 by Madhuri @ 9797110ae6fb
 ---
 
 # INT-005 — Design
