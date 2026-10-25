@@ -11,6 +11,8 @@ ratified: 2026-10-25 by Madhuri @ 8caa0054bcb3
 **Source intent:** `intents/INT-005/intent.md`
 **Rests on:** `decisions/2026-10-25-int-005-provisional-tams-assumptions.md` (Q-008 to Q-010 provisional, sample data, made-up hub extensions)
 
+**Naming:** custom fields on standard objects carry the `TAMS_` prefix, and Boolean fields start with `Is_`, per the source naming conventions (`decisions/2026-10-26-int-005-naming-and-stand-in-org.md`).
+
 **Approach in one line:** map all three hubs onto Data 360's standard Sales Order, Sales Order Product and Shopping Cart objects, adding a few custom fields to them. A small custom reference object turns type codes into business categories. Hub-prefixed keys are built by formula fields on each hub's data stream. Proof runs on synthetic sample data loaded through the Ingestion API.
 
 ## Data model
@@ -22,7 +24,7 @@ All objects live in the `default` data space (ADR 0001). Everything else is stan
 | Transaction | `ssot__SalesOrder__dlm` | Standard, plus custom fields | Engagement (event time = transaction date-time) |
 | Line item | `ssot__SalesOrderProduct__dlm` | Standard, plus custom fields | Engagement (event time = parent transaction date-time) |
 | Cart | `ssot__ShoppingCart__dlm` | Standard, plus custom fields | Engagement (event time = cart created date-time) |
-| Transaction type → category | `GRLG_Transaction_Type__dlm` | **Custom** | Other (reference data) |
+| Transaction type → category | `TAMS_Transaction_Type__dlm` | **Custom** | Other (reference data) |
 
 **Category is permanent and set by the first mapping.** An object takes its category from the first data stream mapped to it. A data stream's category can't be changed after it's saved, and engagement-category streams map only to engagement objects [docs:https://help.salesforce.com/s/articleView?id=data.c360_a_category.htm&release=264.0.0&type=5]. INT-005's sample streams are the first mappings, so they fix the category for INT-006 and INT-007. They use Engagement because transactions and carts are time-series data and segments need date filters. The event time must be a date that never changes. That holds under the Q-010 assumption (edits arrive as new records). If Q-010 comes back as in-place updates, the event-time choice still holds (the transaction date-time doesn't move), but see Consequences in the decision record.
 
@@ -31,23 +33,23 @@ All objects live in the `default` data space (ADR 0001). Everything else is stan
 | Need (intent clause) | Sales Order | Sales Order Product | Shopping Cart |
 |---|---|---|---|
 | Hub-prefixed ID | `ssot__Id__c` ← formula `'H1-' + id` | `ssot__Id__c` ← prefixed line ID; `ssot__SalesOrderId__c` ← prefixed parent ID | `ssot__Id__c` ← prefixed cart ID |
-| Raw TAMS ID (traceability) | `ssot__ExternalRecordId__c` | `ssot__ExternalRecordId__c` | custom `Source_Record_Id__c` |
-| Hub tag | custom `Hub_Code__c` (`H1`/`H2`/`H3`) | custom `Hub_Code__c` | custom `Hub_Code__c` |
-| Store tag | `ssot__SalesStoreId__c` (hub-prefixed) | custom `Store_Id__c` | custom `Store_Id__c` |
-| Channel tag | `ssot__SalesChannelId__c` | custom `Channel_Code__c` | custom `Channel_Code__c` |
-| Transaction type | custom `Transaction_Type_Key__c` (hub + code) → `GRLG_Transaction_Type__dlm` | — | — |
-| Amounts in AUD | `ssot__TotalAmount__c`, `ssot__TotalTaxAmount__c`; `ssot__CurrencyCode__c` = `AUD` | standard amount fields; custom `Currency_Code__c` = `AUD` | `ssot__TotalProductAmount__c`; custom `Currency_Code__c` = `AUD` |
-| Tax-included flag | custom `Tax_Included__c` (Boolean) | custom `Tax_Included__c` | custom `Tax_Included__c` |
+| Raw TAMS ID (traceability) | `ssot__ExternalRecordId__c` | `ssot__ExternalRecordId__c` | custom `TAMS_Source_Record_Id__c` |
+| Hub tag | custom `TAMS_Hub_Code__c` (`H1`/`H2`/`H3`) | custom `TAMS_Hub_Code__c` | custom `TAMS_Hub_Code__c` |
+| Store tag | `ssot__SalesStoreId__c` (hub-prefixed) | custom `TAMS_Store_Id__c` | custom `TAMS_Store_Id__c` |
+| Channel tag | `ssot__SalesChannelId__c` | custom `TAMS_Channel_Code__c` | custom `TAMS_Channel_Code__c` |
+| Transaction type | custom `TAMS_Transaction_Type_Key__c` (hub + code) → `TAMS_Transaction_Type__dlm` | — | — |
+| Amounts in AUD | `ssot__TotalAmount__c`, `ssot__TotalTaxAmount__c`; `ssot__CurrencyCode__c` = `AUD` | standard amount fields; custom `TAMS_Currency_Code__c` = `AUD` | `ssot__TotalProductAmount__c`; custom `TAMS_Currency_Code__c` = `AUD` |
+| Tax-included flag | custom `Is_TAMS_Tax_Included__c` (Boolean) | custom `Is_TAMS_Tax_Included__c` | custom `Is_TAMS_Tax_Included__c` |
 | Void / refund / edit link (Q-010) | `ssot__OriginalOrderId__c` (standard, hub-prefixed) | — | — |
-| Event time | `ssot__OrderStartDate__c`, or custom `Transaction_DateTime__c` if the standard field's meaning doesn't fit (ruled at build) | custom `Transaction_DateTime__c` | custom `Cart_Created_DateTime__c` |
+| Event time | `ssot__OrderStartDate__c`, or custom `TAMS_Transaction_DateTime__c` if the standard field's meaning doesn't fit (ruled at build) | custom `TAMS_Transaction_DateTime__c` | custom `TAMS_Cart_Created_DateTime__c` |
 
-**`GRLG_Transaction_Type__dlm`** (custom, Other): `Id` (key = `Hub_Code` + `-` + type code, because Hub 3 has codes the others don't), `Hub_Code__c`, `Type_Code__c`, `Type_Label__c`, `Business_Category__c` (Sale, Return, Void, Loyalty Accrual, Redemption until Q-021 is answered). Relationship: Sales Order `Transaction_Type_Key__c` → `GRLG_Transaction_Type__dlm.Id`, many-to-one.
+**`TAMS_Transaction_Type__dlm`** (custom, Other): `Id` (key = hub code + `-` + type code, because Hub 3 has codes the others don't), `TAMS_Hub_Code__c`, `Type_Code__c`, `Type_Label__c`, `Business_Category__c` (Sale, Return, Void, Loyalty Accrual, Redemption until Q-021 is answered). Relationship: Sales Order `TAMS_Transaction_Type_Key__c` → `TAMS_Transaction_Type__dlm.Id`, many-to-one.
 
-**Hub schema extensions (made-up, per the decision record):** each hub's sample schema carries two or three local extension columns with hub-specific names. Each hub's stream maps them onto the same shared custom field. For example, Hub 1 `click_collect_flag`, Hub 3 `fulfilment_mode`, and Hub 2 `collect_store` all map to Sales Order `Fulfilment_Method__c`. The real list arrives with the hub data dictionaries.
+**Hub schema extensions (made-up, per the decision record):** each hub's sample schema carries two or three local extension columns with hub-specific names. Each hub's stream maps them onto the same shared custom field. For example, Hub 1 `click_collect_flag`, Hub 3 `fulfilment_mode`, and Hub 2 `collect_store` all map to Sales Order `TAMS_Fulfilment_Method__c`. The real list arrives with the hub data dictionaries.
 
 **Card numbers (guardrail):** no stream schema contains a card-number column, so card data never enters a data lake object. Sales Order Payment Summary isn't mapped in INT-005. If a later hub extract carries card data, the stream schema leaves that column out; at most a token or last-4 maps into a custom field.
 
-**Component descriptions** (the Setup `description` for each custom field and object): one plain sentence plus `INT-005`. For example: `GRLG_Transaction_Type__dlm`: "Maps each hub's TAMS transaction-type code to a business category so one segment can span all hubs. INT-005." `Tax_Included__c`: "True when the amount includes GST. Set per hub at ingestion. INT-005."
+**Component descriptions** (the Setup `description` for each custom field and object): one plain sentence plus `INT-005`. For example: `TAMS_Transaction_Type__dlm`: "Maps each hub's TAMS transaction-type code to a business category so one segment can span all hubs. INT-005." `Is_TAMS_Tax_Included__c`: "True when the amount includes GST. Set per hub at ingestion. INT-005."
 
 ## Sharing & security
 
@@ -84,7 +86,7 @@ All declarative; there's no Apex and no Flow.
 
 ## Architecture conformance
 
-- **ADR 0001 (one org, default data space as APAC, Australia only):** conforms. Every object, stream and mapping is in `default`. The model isn't Australia-specific: `Hub_Code__c` and the hub-keyed type reference let other APAC hubs join later without restructuring, as the ADR's consequences ask.
+- **ADR 0001 (one org, default data space as APAC, Australia only):** conforms. Every object, stream and mapping is in `default`. The model isn't Australia-specific: `TAMS_Hub_Code__c` and the hub-keyed type reference let other APAC hubs join later without restructuring, as the ADR's consequences ask.
 - **Kickoff commitments:** card numbers never enter Data 360 (conforms: no card columns). Inbound data lands on Data 360's own entry points (conforms: Ingestion API now, cloud storage in INT-006). Nightly and new data only (conforms: no history load).
 
 ## Neighboring & future scope
@@ -92,7 +94,7 @@ All declarative; there's no Apex and no Flow.
 - **Depends on:** none.
 - **INT-006 (nightly loads):** reuses this model. Its streams must be Engagement category with the same immutable event time, plus the same prefix formulas. Its "corrections and deletions applied, not appended" needs upsert on the hub-prefixed primary key, which this key design supports. Before INT-006's first real load, the sample streams are deleted and their data lake objects dropped (decision record).
 - **INT-007 (streaming):** lands in the same model. It must also be Engagement category. If it streams cart activity, it may also use the standard `ssot__ShoppingCartProductEngagement__dlm`. Nothing here blocks that.
-- **INT-008 (loyalty balance linked to commerce records):** needs a loyalty member ID on the transactions. The design adds a `Loyalty_Member_Id__c` field on Sales Order, filled from whichever hub extension carries it. It's a field slot, not INT-008's feed (Q-design-4).
+- **INT-008 (loyalty balance linked to commerce records):** needs a loyalty member ID on the transactions. The design adds a `TAMS_Loyalty_Member_Id__c` field on Sales Order, filled from whichever hub extension carries it. It's a field slot, not INT-008's feed (Q-design-4).
 - **INT-001 (masking):** gets the list of personal fields above. No dependency is declared either way. If INT-001 lands first, its policies cover these objects; if it lands later, the objects hold only synthetic data until then.
 - **Same-epic intents:** none.
 
@@ -117,4 +119,4 @@ All declarative; there's no Apex and no Flow.
 - **Q-design-1:** How does the Data 360 configuration reach the repo? ANSWERED (Madhuri, 2026-10-26): as a data kit retrieved into `force-app`. The recommendation is to build it in the org, package the objects, fields, streams and mappings as a data kit, and retrieve that into `force-app`, so the PR carries it. The alternative is runbook steps only. INT-003 (release path) isn't delivered yet, so this sets a precedent it may revisit.
 - **Q-design-2:** Do carts need line items in INT-005? ANSWERED (Madhuri, 2026-10-26): cart headers only. Data 360 has no standard cart-line object. The recommendation is cart headers only for now (the acceptance doesn't need cart lines), with INT-007 using the standard cart-product engagement object if abandonment needs products.
 - **Q-design-3:** ANSWERED (Madhuri, 2026-10-26): Data Cloud Architect. It also grants Customize Application; INT-001 may narrow it. The question was which standard permission set the Data Engineer persona gets: Data Cloud User (view-only, enough to query) or Data Cloud Architect (full, including Setup)? This overlaps INT-001's access model.
-- **Q-design-4:** Keep `Loyalty_Member_Id__c` on Sales Order now, or leave it to INT-008? ANSWERED (Madhuri, 2026-10-26): add it now.
+- **Q-design-4:** Keep `TAMS_Loyalty_Member_Id__c` on Sales Order now, or leave it to INT-008? ANSWERED (Madhuri, 2026-10-26): add it now.
