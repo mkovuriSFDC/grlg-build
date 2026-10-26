@@ -1,0 +1,32 @@
+{
+  "schemas": [
+    {
+      "availabilityStatus": "In Use",
+      "fields": [
+        {
+          "dataType": "Text",
+          "label": "First Name",
+          "name": "FirstName"
+        },
+        {
+          "dataType": "Text",
+          "label": "GUID",
+          "name": "Guid"
+        },
+        {
+          "dataType": "DateTime",
+          "label": "Last Modified",
+          "name": "LastModified"
+        },
+        {
+          "dataType": "Text",
+          "label": "Last Name",
+          "name": "LastName"
+        }
+      ],
+      "label": "PersonRecord",
+      "name": "PersonRecord",
+      "schemaType": "IngestApi"
+    }
+  ]
+}

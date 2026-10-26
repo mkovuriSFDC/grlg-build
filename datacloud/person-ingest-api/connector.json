@@ -1,0 +1,8 @@
+{
+  "connectorType": "IngestApi",
+  "id": "1WMaj000000JQI9GAO",
+  "label": "PersonIngestAPI",
+  "name": "PersonIngestAPI_2966d7ef_fb3a_4728_91de_b18e5e9a3439",
+  "status": "CONNECTED",
+  "tenantSpecificEndpoint": "mfrd1zbvgnrtsmzyg0ygknt0m0.c360a.salesforce.com"
+}

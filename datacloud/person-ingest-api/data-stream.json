@@ -1,0 +1,162 @@
+{
+  "advancedAttributes": {},
+  "capabilities": {},
+  "connectorInfo": {
+    "connectorType": "IngestApi"
+  },
+  "dataAccessMode": "INGEST",
+  "dataLakeObjectInfo": {
+    "capabilities": {},
+    "category": "Profile",
+    "dataLakeFieldInfoRepresentation": [
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "KQ_Guid",
+        "name": "KQ_Guid"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": true,
+        "label": "Guid",
+        "name": "Guid"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "Data Source Object",
+        "name": "DataSourceObject"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "Data Source",
+        "name": "DataSource"
+      },
+      {
+        "dataType": "DateTime",
+        "isPrimaryKey": false,
+        "label": "LastModified",
+        "name": "LastModified"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "FirstName",
+        "name": "FirstName"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "LastName",
+        "name": "LastName"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "cdp_sys_SourceVersion",
+        "name": "cdp_sys_SourceVersion"
+      }
+    ],
+    "dataSpaceInfo": [
+      {
+        "label": "default",
+        "name": "default"
+      }
+    ],
+    "fields": [
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "KQ_Guid",
+        "name": "KQ_Guid"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": true,
+        "label": "Guid",
+        "name": "Guid"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "Data Source Object",
+        "name": "DataSourceObject"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "Data Source",
+        "name": "DataSource"
+      },
+      {
+        "dataType": "DateTime",
+        "isPrimaryKey": false,
+        "label": "LastModified",
+        "name": "LastModified"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "FirstName",
+        "name": "FirstName"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "LastName",
+        "name": "LastName"
+      },
+      {
+        "dataType": "Text",
+        "isPrimaryKey": false,
+        "label": "cdp_sys_SourceVersion",
+        "name": "cdp_sys_SourceVersion"
+      }
+    ],
+    "id": "0gOaj000005td13EAA",
+    "label": "PersonRecordStream",
+    "name": "PersonIngestAPI_PersonRecord_96099A81__dll",
+    "recordModifiedFieldName": "LastModified",
+    "status": "ACTIVE"
+  },
+  "dataSource": "PersonIngestAPI_2966d7ef_fb3a_4728_91de_b18e5e9a3439",
+  "dataStreamType": "INGESTAPI",
+  "isEnabled": true,
+  "label": "PersonIngestAPI-PersonRecord",
+  "lastRunStatus": "NONE",
+  "mappings": [],
+  "name": "PersonIngestAPI_PersonRecord_96099A81",
+  "problemRecordDataLakeObjectName": "PR_PersonIngestAPI_PersonRecord_96099A81__dll",
+  "recordId": "1dsaj000001ygNBAAY",
+  "refreshConfig": {
+    "frequency": {
+      "hours": [],
+      "refreshDayOfMonth": []
+    },
+    "hasHeaders": false,
+    "isAccelerationEnabled": false,
+    "refreshMode": "UPSERT",
+    "shouldFetchImmediately": false,
+    "shouldTreatMissingFilesAsFailures": false
+  },
+  "sourceFields": [
+    {
+      "datatype": "Text",
+      "name": "FirstName"
+    },
+    {
+      "datatype": "Text",
+      "name": "Guid"
+    },
+    {
+      "datatype": "DateTime",
+      "name": "LastModified"
+    },
+    {
+      "datatype": "Text",
+      "name": "LastName"
+    }
+  ],
+  "status": "ACTIVE"
+}
